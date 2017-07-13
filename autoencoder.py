@@ -11,8 +11,8 @@ n_l2 = 256
 n_l3 = 124
 z_dim = 64
 batch_size = 32
-n_epochs = 100
-learning_rate = 0.01
+n_epochs = 10
+learning_rate = 0.001
 
 # Placeholders for input data and the targets
 x_input = tf.placeholder(dtype=tf.float32, shape=[batch_size, input_dim], name='Input')
