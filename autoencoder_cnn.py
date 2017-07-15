@@ -72,6 +72,7 @@ decoder_output = autoencoder_cnn(x_input_)
 # Loss
 loss = tf.reduce_mean(tf.square(x_target_ - decoder_output))
 # loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=decoder_output, labels=x_target))
+
 # Optimizer
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
 init = tf.global_variables_initializer()
