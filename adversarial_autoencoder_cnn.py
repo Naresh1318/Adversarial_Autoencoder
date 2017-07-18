@@ -21,7 +21,7 @@ real_dist = tf.placeholder(tf.float32, [None, 100], name='real_distribution')
 
 # TODO: Changed bias initialization from zeros to truncated norm
 def cnn_2d(x, shape, name):
-    with tf.variable_scope(name):
+    with tf.variable_scope(name, reuse=None):
         weights = tf.get_variable("weights", shape=shape,
                                   initializer=tf.truncated_normal_initializer(mean=0., stddev=1.))
         bias = tf.get_variable("bias", [shape[-1]], initializer=tf.truncated_normal_initializer())
@@ -30,7 +30,7 @@ def cnn_2d(x, shape, name):
 
 
 def cnn_2d_trans(x, shape, output_shape, name):
-    with tf.variable_scope(name):
+    with tf.variable_scope(name, reuse=None):
         weights = tf.get_variable("weights", shape=shape,
                                   initializer=tf.truncated_normal_initializer(mean=0., stddev=1.))
         bias = tf.get_variable("bias", [shape[-2]], initializer=tf.truncated_normal_initializer())
@@ -39,7 +39,7 @@ def cnn_2d_trans(x, shape, output_shape, name):
 
 
 def dense(x, n1, n2, name):
-    with tf.variable_scope(name):
+    with tf.variable_scope(name, reuse=None):
         weights = tf.get_variable("weights", shape=[n1, n2],
                                   initializer=tf.truncated_normal_initializer(mean=0., stddev=1.))
         bias = tf.get_variable("bias", shape=[n2], initializer=tf.truncated_normal_initializer(mean=0., stddev=1.))
@@ -81,36 +81,45 @@ def discriminator(x, reuse=False):
 encoder_output = encoder(x_input_)
 decoder_output = decoder(encoder_output)
 
-# Loss
-loss = tf.reduce_mean(tf.square(x_target_ - decoder_output))
+# Reconstruction loss
+recon_loss = tf.reduce_mean(tf.square(x_target_ - decoder_output))
 # loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=decoder_output, labels=x_target))
 
 # Optimizer
-optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
+recon_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(recon_loss)
 
 # Fake input to discriminator
-fake_dist_input = encoder(x_input_, reuse=True)
-real_dist_input = real_dist
+with tf.variable_scope(tf.get_variable_scope()) as enc_scope:
+    fake_dist_input = encoder(x_input_, reuse=True)
+    real_dist_input = real_dist
 
 # Compute discriminator outputs and loss
-d_real = discriminator(real_dist_input)
-d_fake = discriminator(fake_dist_input, reuse=True)
-dc_loss = -tf.reduce_mean(tf.log(d_real) + tf.log(1 - d_fake))
+with tf.variable_scope(tf.get_variable_scope()) as dis_scope:
+    d_real = discriminator(real_dist)
+    d_fake = discriminator(fake_dist_input, reuse=True)
+    dc_loss = -tf.reduce_mean(tf.log(d_real) + tf.log(1 - d_fake))
 
 all_variables = tf.trainable_variables()
 dc_var = [var for var in all_variables if 'dc_' in var.name]
 en_var = [var for var in all_variables if 'e_' in var.name]
+
 dc_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(dc_loss, var_list=dc_var)
 
 # Generator
 gen_loss = -tf.reduce_mean(tf.log(d_fake))
 gen_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(gen_loss, var_list=en_var)
 
+# TODO: Know the reason why I used this in the GANs N' Roses repo.
+'''with tf.variable_scope(tf.get_variable_scope(), reuse=False):
+    dc_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(dc_loss, var_list=dc_var)
+    optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
+    gen_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(gen_loss, var_list=en_var)'''
+
 # TODO: continue from here
 init = tf.global_variables_initializer()
 
 # Visualization
-tf.summary.scalar(name='Loss', tensor=loss)
+tf.summary.scalar(name='Loss', tensor=recon_loss)
 tf.summary.image(name='Input Images', tensor=x_input_, max_outputs=10)
 tf.summary.image(name='Generated Images', tensor=decoder_output, max_outputs=10)
 summary_op = tf.summary.merge_all()
@@ -124,10 +133,13 @@ with tf.Session() as sess:
     for i in range(n_epochs):
         n_batches = int(mnist.train.num_examples / batch_size)
         for b in range(n_batches):
+            z_real_dist = np.random.randn(batch_size, 100) * 5.
             batch_x, _ = mnist.train.next_batch(batch_size)
-            sess.run(optimizer, feed_dict={x_input: batch_x, x_target: batch_x})
+            sess.run(recon_optimizer, feed_dict={x_input: batch_x, x_target: batch_x})
+            sess.run(dc_optimizer, feed_dict={x_input: batch_x, x_target: batch_x, real_dist: z_real_dist})
+            sess.run(gen_optimizer, feed_dict={x_input: batch_x, x_target: batch_x})
             if b % 50 == 0:
-                batch_loss, summary = sess.run([loss, summary_op], feed_dict={x_input: batch_x, x_target: batch_x})
+                batch_loss, summary = sess.run([recon_loss, summary_op], feed_dict={x_input: batch_x, x_target: batch_x})
                 writer.add_summary(summary, global_step=step)
                 print("Loss: {}".format(batch_loss))
                 print("Epoch: {}, iteration: {}".format(i, b))
