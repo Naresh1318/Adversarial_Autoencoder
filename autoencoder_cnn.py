@@ -1,20 +1,38 @@
 import tensorflow as tf
+import datetime
+import os
 from tensorflow.examples.tutorials.mnist import input_data
 
 # Get the MNIST data
 mnist = input_data.read_data_sets('./Data', one_hot=True)
 
 # Parameters
-z_dim = 100
-learning_rate = 0.001
+z_dim = 2
+learning_rate = 0.01
 batch_size = 32
 n_epochs = 100
+beta1 = 0.5
+results_path = './Results'
 
 # Inputs and target
 x_input = tf.placeholder(tf.float32, [None, 784], name='Input_Image')
 x_target = tf.placeholder(tf.float32, [None, 784], name='Target_Image')
 x_input_ = tf.reshape(x_input, [-1, 28, 28, 1])
 x_target_ = tf.reshape(x_target, [-1, 28, 28, 1])
+
+
+def form_results():
+    folder_name = "/{0}_{1}_{2}_{3}_{4}_{5}". \
+        format(datetime.datetime.now(), z_dim, learning_rate, batch_size, n_epochs, beta1)
+    tensorboard_path = results_path + folder_name + '/Tensorboard'
+    saved_model_path = results_path + folder_name + '/Saved_models/'
+    log_path = results_path + folder_name + '/log'
+    if not os.path.exists(results_path + folder_name):
+        os.mkdir(results_path + folder_name)
+        os.mkdir(tensorboard_path)
+        os.mkdir(saved_model_path)
+        os.mkdir(log_path)
+    return tensorboard_path, saved_model_path, log_path
 
 
 def cnn_2d(x, shape, name):
@@ -49,56 +67,72 @@ def dense(x, n1, n2, name, activation='relu'):
         return out
 
 
-# Architecture
-def autoencoder_cnn(x):
-    # Encoder
+def encoder(x):
     e_conv1 = tf.nn.tanh(cnn_2d(x, [3, 3, 1, 64], name='e_conv1'))
     e_conv2 = tf.nn.tanh(cnn_2d(e_conv1, [3, 3, 64, 32], name='e_conv2'))
     e_conv2_flat = tf.reshape(e_conv2, [-1, 7 * 7 * 32], name='Reshape_1')
-    den1 = dense(e_conv2_flat, 7 * 7 * 32, 100, activation=None, name='den1')
+    output = dense(e_conv2_flat, 7 * 7 * 32, z_dim, activation=None, name='den1')
+    return output
 
-    # Decoder
-    d_den1 = dense(den1, 100, 7 * 7 * 32, activation='tanh', name='d_den1')
+
+def decoder(x):
+    d_den1 = dense(x, z_dim, 7 * 7 * 32, activation='tanh', name='d_den1')
     d_den1_unflat = tf.reshape(d_den1, [-1, 7, 7, 32], name='Reshape_2')
     d_conv1 = tf.nn.tanh(cnn_2d_trans(d_den1_unflat, shape=[3, 3, 64, 32],
                                       output_shape=[batch_size, 14, 14, 64], name='d_conv1'))
-    d_conv2 = tf.nn.sigmoid(cnn_2d_trans(d_conv1, shape=[3, 3, 1, 64],
-                                         output_shape=[batch_size, 28, 28, 1], name='d_conv2'))
-    return d_conv2
+    output = tf.nn.sigmoid(cnn_2d_trans(d_conv1, shape=[3, 3, 1, 64],
+                                        output_shape=[batch_size, 28, 28, 1], name='d_conv2'))
+    return output
 
 
-decoder_output = autoencoder_cnn(x_input_)
+def train(train_flag=True):
+    encoder_output = encoder(x_input_)
+    decoder_output = decoder(encoder_output)
 
-# Loss
-loss = tf.reduce_mean(tf.square(x_target_ - decoder_output))
-# loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=decoder_output, labels=x_target))
+    # Loss
+    loss = tf.reduce_mean(tf.square(x_target_ - decoder_output))
 
-# Optimizer
-optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
-init = tf.global_variables_initializer()
+    # Optimizer
+    optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate, beta1=beta1).minimize(loss)
+    init = tf.global_variables_initializer()
 
-# Visualization
-tf.summary.scalar(name='Loss', tensor=loss)
-tf.summary.image(name='Input Images', tensor=x_input_, max_outputs=10)
-tf.summary.image(name='Generated Images', tensor=decoder_output, max_outputs=10)
-summary_op = tf.summary.merge_all()
+    # Visualization
+    tf.summary.scalar(name='Loss', tensor=loss)
+    tf.summary.image(name='Input Images', tensor=x_input_, max_outputs=10)
+    tf.summary.image(name='Generated Images', tensor=decoder_output, max_outputs=10)
+    summary_op = tf.summary.merge_all()
 
-# Saving the model
-saver = tf.train.Saver()
-step = 0
-with tf.Session() as sess:
-    sess.run(init)
-    writer = tf.summary.FileWriter(logdir='./Results/Tensorboard', graph=sess.graph)
-    for i in range(n_epochs):
-        n_batches = int(mnist.train.num_examples / batch_size)
-        for b in range(n_batches):
-            batch_x, _ = mnist.train.next_batch(batch_size)
-            sess.run(optimizer, feed_dict={x_input: batch_x, x_target: batch_x})
-            if b % 50 == 0:
-                batch_loss, summary = sess.run([loss, summary_op], feed_dict={x_input: batch_x, x_target: batch_x})
-                writer.add_summary(summary, global_step=step)
-                print("Loss: {}".format(batch_loss))
-                print("Epoch: {}, iteration: {}".format(i, b))
-            step += 1
+    # Saving the model
+    saver = tf.train.Saver()
+    step = 0
+    with tf.Session() as sess:
+        if train_flag:
+            tensorboard_path, saved_model_path, log_path = form_results()
+            sess.run(init)
+            writer = tf.summary.FileWriter(logdir=tensorboard_path, graph=sess.graph)
+            for i in range(n_epochs):
+                n_batches = int(mnist.train.num_examples / batch_size)
+                for b in range(n_batches):
+                    batch_x, _ = mnist.train.next_batch(batch_size)
+                    sess.run(optimizer, feed_dict={x_input: batch_x, x_target: batch_x})
+                    if b % 50 == 0:
+                        batch_loss, summary = sess.run([loss, summary_op], feed_dict={x_input: batch_x, x_target: batch_x})
+                        writer.add_summary(summary, global_step=step)
+                        print("Loss: {}".format(batch_loss))
+                        print("Epoch: {}, iteration: {}".format(i, b))
+                        with open(log_path + '/log.txt', 'a') as log:
+                            log.write("Epoch: {}, iteration: {}\n".format(i, b))
+                            log.write("Loss: {}\n".format(batch_loss))
+                    step += 1
 
-        saver.save(sess, save_path='./Results/Saved_Models/', global_step=step)
+                saver.save(sess, save_path=saved_model_path, global_step=step)
+        else:
+            # Get the latest results folder
+            all_results = os.listdir(results_path)
+            all_results.sort()
+            saver.restore(sess, tf.train.latest_checkpoint(results_path + all_results[-1] + '/Saved_models/'))
+            print("Model Loaded!")
+            # TODO: give any desired input to the encoder or decoder
+
+if __name__ == '__main__':
+    train(True)
