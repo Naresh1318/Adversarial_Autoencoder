@@ -8,12 +8,11 @@ mnist = input_data.read_data_sets('./Data', one_hot=True)
 
 # Parameters
 input_dim = 784
-n_l1 = 512
-n_l2 = 256
-n_l3 = 128
-z_dim = 64
-batch_size = 32
-n_epochs = 50
+n_l1 = 1000
+n_l2 = 1000
+z_dim = 8
+batch_size = 100
+n_epochs = 1000
 learning_rate = 0.001
 beta1 = 0.9
 results_path = './Results'
@@ -25,7 +24,7 @@ x_target = tf.placeholder(dtype=tf.float32, shape=[batch_size, input_dim], name=
 
 
 def form_results():
-    folder_name = "/{0}_{1}_{2}_{3}_{4}_{5}". \
+    folder_name = "/{0}_{1}_{2}_{3}_{4}_{5}_V2". \
         format(datetime.datetime.now(), z_dim, learning_rate, batch_size, n_epochs, beta1)
     tensorboard_path = results_path + folder_name + '/Tensorboard'
     saved_model_path = results_path + folder_name + '/Saved_models/'
@@ -38,26 +37,25 @@ def form_results():
     return tensorboard_path, saved_model_path, log_path
 
 
-def dense(x, n1, n2):
-    weights = tf.Variable(tf.truncated_normal([n1, n2]), dtype=tf.float32)
-    bias = tf.Variable(tf.truncated_normal([n2]), dtype=tf.float32)
-    out = tf.add(tf.matmul(x, weights), bias)
-    return out
+def dense(x, n1, n2, name):
+    with tf.name_scope(name):
+        weights = tf.Variable(tf.random_normal([n1, n2], mean=0., stddev=0.01), dtype=tf.float32, name='weights')
+        bias = tf.Variable(tf.constant(value=0., shape=[n2]), dtype=tf.float32, name='bias')
+        out = tf.add(tf.matmul(x, weights), bias, name='matmul')
+        return out
 
 
 # The autoencoder network
 def autoencoder(x):
     # Encoder
-    e_dense_1 = tf.nn.sigmoid(dense(x, input_dim, n_l1))
-    e_dense_2 = tf.nn.sigmoid(dense(e_dense_1, n_l1, n_l2))
-    e_dense_3 = tf.nn.sigmoid(dense(e_dense_2, n_l2, n_l3))
-    latent_variable = dense(e_dense_3, n_l3, z_dim)
+    e_dense_1 = tf.nn.relu(dense(x, input_dim, n_l1, 'e_dense_1'))
+    e_dense_2 = tf.nn.relu(dense(e_dense_1, n_l1, n_l2, 'e_dense_2'))
+    latent_variable = dense(e_dense_2, n_l2, z_dim, 'latent_variable')
 
     # Decoder
-    d_dense_1 = tf.nn.sigmoid(dense(latent_variable, z_dim, n_l3))
-    d_dense_2 = tf.nn.sigmoid(dense(d_dense_1, n_l3, n_l2))
-    d_dense_2 = tf.nn.sigmoid(dense(d_dense_2, n_l2, n_l1))
-    output = tf.nn.sigmoid(dense(d_dense_2, n_l1, input_dim))
+    d_dense_1 = tf.nn.relu(dense(latent_variable, z_dim, n_l2, 'd_dense_1'))
+    d_dense_2 = tf.nn.relu(dense(d_dense_1, n_l2, n_l1, 'd_dense_2'))
+    output = tf.nn.sigmoid(dense(d_dense_2, n_l1, input_dim, 'output'))
     return output
 
 
