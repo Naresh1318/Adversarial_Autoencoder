@@ -10,7 +10,7 @@ mnist = input_data.read_data_sets('./Data', one_hot=True)
 input_dim = 784
 n_l1 = 1000
 n_l2 = 1000
-z_dim = 8
+z_dim = 2
 batch_size = 100
 n_epochs = 1000
 learning_rate = 0.001
@@ -50,12 +50,12 @@ def autoencoder(x):
     # Encoder
     e_dense_1 = tf.nn.relu(dense(x, input_dim, n_l1, 'e_dense_1'))
     e_dense_2 = tf.nn.relu(dense(e_dense_1, n_l1, n_l2, 'e_dense_2'))
-    latent_variable = dense(e_dense_2, n_l2, z_dim, 'latent_variable')
+    latent_variable = dense(e_dense_2, n_l2, z_dim, 'e_latent_variable')
 
     # Decoder
     d_dense_1 = tf.nn.relu(dense(latent_variable, z_dim, n_l2, 'd_dense_1'))
     d_dense_2 = tf.nn.relu(dense(d_dense_1, n_l2, n_l1, 'd_dense_2'))
-    output = tf.nn.sigmoid(dense(d_dense_2, n_l1, input_dim, 'output'))
+    output = tf.nn.sigmoid(dense(d_dense_2, n_l1, input_dim, 'd_output'))
     return output
 
 
