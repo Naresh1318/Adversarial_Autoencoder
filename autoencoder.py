@@ -28,8 +28,14 @@ decoder_input = tf.placeholder(dtype=tf.float32, shape=[1, z_dim], name='Decoder
 
 
 def generate_image_grid(sess, op):
-    x_points = np.arange(-1, 1, 1.5).astype(np.float32)
-    y_points = np.arange(-1, 1, 1.5).astype(np.float32)
+    """
+    Generates a grid of images by passing a set of numbers to the decoder and getting its output.
+    :param sess: Tensorflow Session required to get the decoder output
+    :param op: Operation that needs to be called inorder to get the decoder output
+    :return: None, displays a matplotlib window with all the merged images.
+    """
+    x_points = np.arange(0, 1, 1.5).astype(np.float32)
+    y_points = np.arange(0, 1, 1.5).astype(np.float32)
 
     nx, ny = len(x_points), len(y_points)
     plt.subplot()
@@ -49,6 +55,10 @@ def generate_image_grid(sess, op):
 
 
 def form_results():
+    """
+    Forms folders for each run to store the tensorboard files, saved models and the log files.
+    :return: three string pointing to tensorboard, saved models and log paths respectively.
+    """
     folder_name = "/{0}_{1}_{2}_{3}_{4}_{5}_autoencoder". \
         format(datetime.datetime.now(), z_dim, learning_rate, batch_size, n_epochs, beta1)
     tensorboard_path = results_path + folder_name + '/Tensorboard'
@@ -63,6 +73,14 @@ def form_results():
 
 
 def dense(x, n1, n2, name):
+    """
+    Used to create a dense layer.
+    :param x: input tensor to the dense layer
+    :param n1: no. of input neurons
+    :param n2: no. of output neurons
+    :param name: name of the entire dense layer.i.e, variable scope name.
+    :return:
+    """
     with tf.variable_scope(name, reuse=None):
         weights = tf.get_variable("weights", shape=[n1, n2],
                                   initializer=tf.random_normal_initializer(mean=0., stddev=0.01))
@@ -73,6 +91,12 @@ def dense(x, n1, n2, name):
 
 # The autoencoder network
 def encoder(x, reuse=False):
+    """
+    Encode part of the autoencoder
+    :param x: input to the autoencoder
+    :param reuse: True -> Reuse the encoder variables, False -> Create or search of variables before creating
+    :return: tensor which is the hidden latent variable of the autoencoder.
+    """
     if reuse:
         tf.get_variable_scope().reuse_variables()
     with tf.name_scope('Encoder'):
@@ -83,6 +107,12 @@ def encoder(x, reuse=False):
 
 
 def decoder(x, reuse=False):
+    """
+    Decoder part of the autoencoder
+    :param x: input to the decoder
+    :param reuse: True -> Reuse the decoder variables, False -> Create or search of variables before creating
+    :return: tensor which should ideally be the input given to the encoder.
+    """
     if reuse:
         tf.get_variable_scope().reuse_variables()
     with tf.name_scope('Decoder'):
@@ -93,6 +123,11 @@ def decoder(x, reuse=False):
 
 
 def train(train_model):
+    """
+    Used to train the autoencoder by passing in the necessary inputs.
+    :param train_model: True -> Train the model, False -> Load the latest trained model and show the image grid.
+    :return: does not return anything
+    """
     with tf.variable_scope(tf.get_variable_scope()):
         encoder_output = encoder(x_input)
         decoder_output = decoder(encoder_output)
