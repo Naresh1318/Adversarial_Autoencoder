@@ -79,7 +79,7 @@ def dense(x, n1, n2, name):
     :param n1: no. of input neurons
     :param n2: no. of output neurons
     :param name: name of the entire dense layer.i.e, variable scope name.
-    :return:
+    :return: tensor with shape [batch_size, n2]
     """
     with tf.variable_scope(name, reuse=None):
         weights = tf.get_variable("weights", shape=[n1, n2],

@@ -130,8 +130,8 @@ def discriminator(x, reuse=False):
     """
     Discriminator that is used to match the posterior distribution with a given prior distribution.
     :param x: tensor of shape [batch_size, z_dim]
-    :param reuse: reuse: True -> Reuse the discriminator variables,
-                         False -> Create or search of variables before creating
+    :param reuse: True -> Reuse the discriminator variables,
+                  False -> Create or search of variables before creating
     :return: tensor of shape [batch_size, 1]
     """
     if reuse:

@@ -13,7 +13,7 @@ n_epochs = 1000
 learning_rate = 0.001
 beta1 = 0.9
 z_dim = 'NA'
-results_path = './Results'
+results_path = './Results/Basic_NN_Classifier'
 n_labels = 10
 n_labeled = 1000
 
@@ -26,7 +26,11 @@ y_target = tf.placeholder(dtype=tf.float32, shape=[None, 10])
 
 
 def form_results():
-    folder_name = "/{0}_{1}_{2}_{3}_{4}_{5}_NN". \
+    """
+    Forms folders for each run to store the tensorboard files, saved models and the log files.
+    :return: three string pointing to tensorboard, saved models and log paths respectively.
+    """
+    folder_name = "/{0}_{1}_{2}_{3}_{4}_{5}_Basic_NN_Classifier". \
         format(datetime.datetime.now(), z_dim, learning_rate, batch_size, n_epochs, beta1)
     tensorboard_path = results_path + folder_name + '/Tensorboard'
     saved_model_path = results_path + folder_name + '/Saved_models/'
@@ -40,12 +44,27 @@ def form_results():
 
 
 def next_batch(x, y, batch_size):
+    """
+    Used to return a random batch from the given inputs.
+    :param x: Input images of shape [None, 784]
+    :param y: Input labels of shape [None, 10]
+    :param batch_size: integer, batch size of images and labels to return
+    :return: x -> [batch_size, 784], y-> [batch_size, 10]
+    """
     index = np.arange(n_labeled)
     random_index = np.random.permutation(index)[:batch_size]
     return x[random_index], y[random_index]
 
 
 def dense(x, n1, n2, name):
+    """
+    Used to create a dense layer.
+    :param x: input tensor to the dense layer
+    :param n1: no. of input neurons
+    :param n2: no. of output neurons
+    :param name: name of the entire dense layer.
+    :return: tensor with shape [batch_size, n2]
+    """
     with tf.name_scope(name):
         weights = tf.Variable(tf.random_normal(shape=[n1, n2], mean=0., stddev=0.01), name='weights')
         bias = tf.Variable(tf.zeros(shape=[n2]), name='bias')
@@ -55,6 +74,11 @@ def dense(x, n1, n2, name):
 
 # Dense Network
 def dense_nn(x):
+    """
+    Network used to classify MNIST digits.
+    :param x: tensor with shape [batch_size, 784], input to the dense fully connected layer.
+    :return: [batch_size, 10], logits of dense fully connected.
+    """
     dense_1 = tf.nn.dropout(tf.nn.relu(dense(x, input_dim, n_l1, 'dense_1')), keep_prob=0.25)
     dense_2 = tf.nn.dropout(tf.nn.relu(dense(dense_1, n_l1, n_l2, 'dense_2')), keep_prob=0.25)
     dense_3 = dense(dense_2, n_l2, n_labels, 'dense_3')
@@ -62,6 +86,10 @@ def dense_nn(x):
 
 
 def train():
+    """
+    Used to train the autoencoder by passing in the necessary inputs.
+    :return: does not return anything
+    """
     dense_output = dense_nn(x_input)
 
     # Loss function
