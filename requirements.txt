@@ -1,0 +1,4 @@
+matplotlib==1.5.3
+numpy==1.12.1
+progressbar==2.3
+tensorflow-gpu==0.12.1
