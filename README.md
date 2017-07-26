@@ -61,7 +61,7 @@ to have a stddev of 5.
 ~ Images of the posterior and prior distributions matching ~
 
 
-![Adversarial_autoencoder](https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/adversarial_autoencoder.png)
+![Adversarial_autoencoder](https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/adversarial_autoencoder_2.png)
 
 ### Supervised Adversarial Autoencoder:
 #### Architecture:
