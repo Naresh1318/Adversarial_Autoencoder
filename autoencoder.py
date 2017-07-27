@@ -2,7 +2,6 @@ import tensorflow as tf
 import numpy as np
 import datetime
 import os
-import argparse
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from tensorflow.examples.tutorials.mnist import input_data
@@ -183,8 +182,4 @@ def train(train_model):
             generate_image_grid(sess, op=decoder_image)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Autoencoder Train Parameter")
-    parser.add_argument('--train', '-t', type=bool, default=True,
-                        help='Set to True to train a new model, False to load weights and display image grid')
-    args = parser.parse_args()
-    train(train_model=args.train)
+    train(train_model=False)
