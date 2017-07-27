@@ -2,7 +2,7 @@
 ### [Under development]
 This repository contains code to implement adversarial autoenocders using Tensorflow.
 
-The explaniation for which can be found [here]().
+The explanation for which can be found [here]().
 
 ## Installing the dependencies
 Install virtualenv and creating a new virtual environment:
