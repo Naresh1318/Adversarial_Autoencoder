@@ -1,5 +1,7 @@
 # Adversarial Autoencoders
 ### [Under development]
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/cover.png" alt="Cover" style="width: 100px;"/>
+
 This repository contains code to implement adversarial autoenocders using Tensorflow.
 
 The explanation for which can be found [here]().
