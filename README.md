@@ -4,7 +4,15 @@
 
 This repository contains code to implement adversarial autoenocders using Tensorflow.
 
-The explanation for which can be found [here]().
+Medium posts:
+
+1. [A Wizard's guide to Adversarial Autoencoders: Part 1. Autoencoders?](https://medium.com/towards-data-science/a-wizards-guide-to-adversarial-autoencoders-part-1-autoencoder-d9a5f8795af4)
+
+2. [A Wizard's guide to Adversarial Autoencoders: Part 2. Exploring the latent space with Adversarial Autoencoders.]()
+
+3. [A Wizard's guide to Adversarial Autoencoders: Part 3. Disentanglement of style and content using a Supervised Adversarial Autoencoder (AAE).]()
+
+3. [A Wizard's guide to Adversarial Autoencoders: Part 4. Classify MNIST with 1000 labels using Semi-supervised AAE.]()
 
 ## Installing the dependencies
 Install virtualenv and creating a new virtual environment:
