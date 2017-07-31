@@ -174,6 +174,10 @@ def train(train_model):
                             log.write("Loss: {}\n".format(batch_loss))
                     step += 1
                 saver.save(sess, save_path=saved_model_path, global_step=step)
+            print("Model Trained!")
+            print("Tensorboard Path: {}".format(tensorboard_path))
+            print("Log Path: {}".format(log_path + '/log.txt'))
+            print("Saved Model Path: {}".format(saved_model_path))
         else:
             all_results = os.listdir(results_path)
             all_results.sort()
