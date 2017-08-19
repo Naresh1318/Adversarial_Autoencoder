@@ -2,13 +2,9 @@ import tensorflow as tf
 import numpy as np
 import datetime
 import os
-import progressbar
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from tensorflow.examples.tutorials.mnist import input_data
-
-# Progressbar
-bar = progressbar.ProgressBar(widgets=['[', progressbar.Timer(), ']', progressbar.Bar(), '(', progressbar.ETA(), ')'])
 
 # Get the MNIST data
 mnist = input_data.read_data_sets('./Data', one_hot=True)
@@ -208,7 +204,7 @@ def train(train_model=True):
             tensorboard_path, saved_model_path, log_path = form_results()
             sess.run(init)
             writer = tf.summary.FileWriter(logdir=tensorboard_path, graph=sess.graph)
-            for i in bar(range(n_epochs)):
+            for i in range(n_epochs):
                 n_batches = int(mnist.train.num_examples / batch_size)
                 print("------------------Epoch {}/{}------------------".format(i, n_epochs))
                 for b in range(1, n_batches + 1):
