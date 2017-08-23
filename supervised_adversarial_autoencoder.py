@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from tensorflow.examples.tutorials.mnist import input_data
 
-
 # Get the MNIST data
 mnist = input_data.read_data_sets('./Data', one_hot=True)
 
@@ -168,7 +167,7 @@ def train(train_model=True):
     # Autoencoder loss
     autoencoder_loss = tf.reduce_mean(tf.square(x_target - decoder_output))
 
-    # Discrimminator Loss
+    # Discriminator Loss
     dc_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.ones_like(d_real), logits=d_real))
     dc_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.zeros_like(d_fake), logits=d_fake))
     dc_loss = dc_loss_fake + dc_loss_real
@@ -191,7 +190,7 @@ def train(train_model=True):
 
     init = tf.global_variables_initializer()
 
-    # Reshape immages to display them
+    # Reshape images to display them
     input_images = tf.reshape(x_input, [-1, 28, 28, 1])
     generated_images = tf.reshape(decoder_output, [-1, 28, 28, 1])
 

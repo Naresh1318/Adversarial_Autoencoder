@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from tensorflow.examples.tutorials.mnist import input_data
 
+# Progressbar
+# bar = progressbar.ProgressBar(widgets=['[', progressbar.Timer(), ']', progressbar.Bar(), '(', progressbar.ETA(), ')'])
+
 # Get the MNIST data
 mnist = input_data.read_data_sets('./Data', one_hot=True)
 
