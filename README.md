@@ -8,11 +8,11 @@ Medium posts:
 
 1. [A Wizard's guide to Adversarial Autoencoders: Part 1. Autoencoders?](https://medium.com/towards-data-science/a-wizards-guide-to-adversarial-autoencoders-part-1-autoencoder-d9a5f8795af4)
 
-2. [A Wizard's guide to Adversarial Autoencoders: Part 2. Exploring the latent space with Adversarial Autoencoders.]()
+2. [A Wizard's guide to Adversarial Autoencoders: Part 2. Exploring the latent space with Adversarial Autoencoders.](https://medium.com/towards-data-science/a-wizards-guide-to-adversarial-autoencoders-part-2-exploring-latent-space-with-adversarial-2d53a6f8a4f9)
 
-3. [A Wizard's guide to Adversarial Autoencoders: Part 3. Disentanglement of style and content using a Supervised Adversarial Autoencoder (AAE).]()
+3. [A Wizard's guide to Adversarial Autoencoders: Part 3. Disentanglement of style and content.](https://medium.com/towards-data-science/a-wizards-guide-to-adversarial-autoencoders-part-3-disentanglement-of-style-and-content-89262973a4d7)
 
-3. [A Wizard's guide to Adversarial Autoencoders: Part 4. Classify MNIST with 1000 labels using Semi-supervised AAE.]()
+3. [A Wizard's guide to Adversarial Autoencoders: Part 4. Classify MNIST using 1000 labels.]()
 
 ## Installing the dependencies
 Install virtualenv and creating a new virtual environment:
@@ -39,8 +39,6 @@ in `./Data` directory.
 ### Autoencoder:
 #### Architecture:
 
-**~Image of the architecture~**
-
 To train a basic autoencoder run:
 
         python3 autoencoder.py --train True
@@ -56,6 +54,7 @@ To load the trained model and generate images passing inputs to the decoder run:
 #### Architecture:
 
 **~Image of the architecture~**
+<img src="" alt="Cover" style="width: 100px;"/>
 
 Training:
 
@@ -69,14 +68,18 @@ Example of adversarial autoencoder output when the encoder is constrained
 to have a stddev of 5.
 
 ~ Images of the posterior and prior distributions matching ~
+<img src="" alt="Cover" style="width: 100px;"/>
+Matching prior and posterior distributions.
 
 
 ![Adversarial_autoencoder](https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/adversarial_autoencoder_2.png)
+Distribution of digits in the latent space.
 
 ### Supervised Adversarial Autoencoder:
 #### Architecture:
 
-**~Image of the architecture~**
+*~Image of the architecture~*
+<img src="" alt="Cover" style="width: 100px;"/>
 
 Training:
 
@@ -87,8 +90,7 @@ Load model and explore the latent space:
         python3 supervised_adversarial_autoencoder.py --train False
 
 Example of disentanglement of style and content:
-
-![supervised_aa](https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/supervised_autoencoder_100.png)
+<img src="" alt="Cover" style="width: 100px;"/>
 
 ### Semi-Supervised Adversarial Autoencoder:
 #### Architecture:
@@ -104,6 +106,7 @@ Load model and explore the latent space:
         python3 supervised_adversarial_autoencoder.py --train False
 
 Classification accuarcy for 1000 labeled images:
+
 ~Graph for variation of accuracy~
 ~Cat dist match~
 ~Gauss dist match~
