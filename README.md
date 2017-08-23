@@ -54,7 +54,7 @@ To load the trained model and generate images passing inputs to the decoder run:
 #### Architecture:
 
 **~Image of the architecture~**
-<img src="" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/AAE%20Block%20Diagram.png" alt="Cover" style="width: 100px;"/>
 
 Training:
 
@@ -68,7 +68,7 @@ Example of adversarial autoencoder output when the encoder is constrained
 to have a stddev of 5.
 
 ~ Images of the posterior and prior distributions matching ~
-<img src="" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/AAE%20dist%20match.png" alt="Cover" style="width: 100px;"/>
 Matching prior and posterior distributions.
 
 
@@ -79,7 +79,7 @@ Distribution of digits in the latent space.
 #### Architecture:
 
 *~Image of the architecture~*
-<img src="" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/Supervised%20AAE.png" alt="Cover" style="width: 100px;"/>
 
 Training:
 
@@ -90,7 +90,7 @@ Load model and explore the latent space:
         python3 supervised_adversarial_autoencoder.py --train False
 
 Example of disentanglement of style and content:
-<img src="" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/disentanglement%20of%20style%20and%20content.png" alt="Cover" style="width: 100px;"/>
 
 ### Semi-Supervised Adversarial Autoencoder:
 #### Architecture:
