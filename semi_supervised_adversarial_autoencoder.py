@@ -154,7 +154,7 @@ def discriminator_gauss(x, reuse=False):
         return output
 
 
-def discriminator_categorial(x, reuse=False):
+def discriminator_categorical(x, reuse=False):
     """
     Discriminator that is used to match the posterior distribution with a given categorical distribution.
     :param x: tensor of shape [batch_size, n_labels]
@@ -165,7 +165,7 @@ def discriminator_categorial(x, reuse=False):
     if reuse:
         tf.get_variable_scope().reuse_variables()
     with tf.name_scope('Discriminator_Categorial'):
-        dc_den1 = tf.nn.relu(dense(x, z_dim, n_l1, name='dc_c_den1'))
+        dc_den1 = tf.nn.relu(dense(x, n_labels, n_l1, name='dc_c_den1'))
         dc_den2 = tf.nn.relu(dense(dc_den1, n_l1, n_l2, name='dc_c_den2'))
         output = dense(dc_den2, n_l2, 1, name='dc_c_output')
         return output
@@ -195,7 +195,7 @@ def train(train_model=True):
     with tf.variable_scope(tf.get_variable_scope()):
         encoder_output_label, encoder_output_latent = encoder(x_input)
         # Concat class label and the encoder output
-        decoder_input = tf.concat(1, [encoder_output_label, encoder_output_latent])
+        decoder_input = tf.concat([encoder_output_label, encoder_output_latent], 1)
         decoder_output = decoder(decoder_input)
 
     # Regularization Phase
@@ -204,8 +204,8 @@ def train(train_model=True):
         d_g_fake = discriminator_gauss(encoder_output_latent, reuse=True)
 
     with tf.variable_scope(tf.get_variable_scope()):
-        d_c_real = discriminator_categorial(categorial_distribution)
-        d_c_fake = discriminator_categorial(encoder_output_label, reuse=True)
+        d_c_real = discriminator_categorical(categorial_distribution)
+        d_c_fake = discriminator_categorical(encoder_output_label, reuse=True)
 
     # Semi-Supervised Classification Phase
     with tf.variable_scope(tf.get_variable_scope()):
@@ -224,23 +224,23 @@ def train(train_model=True):
 
     # Gaussian Discriminator Loss
     dc_g_loss_real = tf.reduce_mean(
-        tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.ones_like(d_g_real), logits=d_g_real))
+        tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.ones_like(d_g_real), logits=d_g_real))
     dc_g_loss_fake = tf.reduce_mean(
-        tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.zeros_like(d_g_fake), logits=d_g_fake))
+        tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.zeros_like(d_g_fake), logits=d_g_fake))
     dc_g_loss = dc_g_loss_fake + dc_g_loss_real
 
     # Categorical Discrimminator Loss
     dc_c_loss_real = tf.reduce_mean(
-        tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.ones_like(d_c_real), logits=d_c_real))
+        tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.ones_like(d_c_real), logits=d_c_real))
     dc_c_loss_fake = tf.reduce_mean(
-        tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.ones_like(d_c_fake), logits=d_c_fake))
+        tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.ones_like(d_c_fake), logits=d_c_fake))
     dc_c_loss = dc_c_loss_fake + dc_c_loss_real
 
     # Generator loss
     generator_g_loss = tf.reduce_mean(
-        tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.ones_like(d_g_fake), logits=d_g_fake))
+        tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.ones_like(d_g_fake), logits=d_g_fake))
     generator_c_loss = tf.reduce_mean(
-        tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.ones_like(d_c_fake), logits=d_c_fake))
+        tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.ones_like(d_c_fake), logits=d_c_fake))
     generator_loss = generator_c_loss + generator_g_loss
 
     # Supervised Encoder Loss
