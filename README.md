@@ -1,8 +1,8 @@
-# Adversarial Autoencoders
+# Adversarial autoencoders
 ### [Under development]
 <img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/nw_architecture.png" alt="Cover" style="width: 100px;"/>
 
-This repository contains code to implement adversarial autoenocders using Tensorflow.
+This repository contains code to implement adversarial autoencoder using Tensorflow.
 
 Medium posts:
 
@@ -105,7 +105,7 @@ Load model and explore the latent space:
 
         python3 supervised_adversarial_autoencoder.py --train False
 
-Classification accuarcy for 1000 labeled images:
+Classification accuracy for 1000 labeled images:
 
 ~Graph for variation of accuracy~
 ~Cat dist match~
