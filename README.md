@@ -115,6 +115,9 @@ Classification accuarcy for 1000 labeled images:
 * Each run generates a required tensorboard files under `./Results/<model>/<time_stamp_and_parameters>/Tensorboard` directory.
 * Use `tensorboard --logdir <tensorboard_dir>` to look at loss variations
 and distributions of latent code.
+* Windows gives an error when `:` is used during folder naming (this is produced during the folder creation for each run).I 
+would suggest you to remove the time stamp from `folder_name` variable in the `form_results()` function. Or, just dual boot linux!
+
 
 ## Thank You
 Please share this repo if you find it helpful.
