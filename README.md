@@ -66,7 +66,8 @@ Example of adversarial autoencoder output when the encoder is constrained
 to have a stddev of 5.
 
 <img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/AAE%20dist%20match.png" alt="Cover" style="width: 100px;"/>
-<div style='text-align: center;'> Matching prior and posterior distributions. </div>
+
+<center> Matching prior and posterior distributions. <center>
 
 
 ![Adversarial_autoencoder](https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/adversarial_autoencoder_2.png)
