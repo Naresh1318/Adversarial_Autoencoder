@@ -67,11 +67,11 @@ to have a stddev of 5.
 
 <img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/AAE%20dist%20match.png" alt="Cover" style="width: 100px;"/>
 
-<center> Matching prior and posterior distributions. </center>
+**_Matching prior and posterior distributions._**
 
 
 ![Adversarial_autoencoder](https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/adversarial_autoencoder_2.png)
-<div style='text-align: center;'> Distribution of digits in the latent space. </div>
+**_Distribution of digits in the latent space._**
 
 ### Supervised Adversarial Autoencoder:
 #### Architecture:
@@ -91,7 +91,7 @@ Example of disentanglement of style and content:
 
 ### Semi-Supervised Adversarial Autoencoder:
 #### Architecture:
-
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/semi_AAE%20architecture.png" alt="Cover" style="width: 100px;"/>
 
 Training:
 
@@ -104,8 +104,12 @@ Load model and explore the latent space:
 Classification accuracy for 1000 labeled images:
 
 ~Graph for variation of accuracy~
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/semi_aae_accuracy_with_NN.png" alt="Cover" style="width: 100px;"/>
+
 ~Cat dist match~
 ~Gauss dist match~
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/cat_n_gauss_dist_real_obtained.png" alt="Cover" style="width: 100px;"/>
+
 
 ***Note:***
 * Each run generates a required tensorboard files under `./Results/<model>/<time_stamp_and_parameters>/Tensorboard` directory.
