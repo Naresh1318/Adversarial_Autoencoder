@@ -103,11 +103,8 @@ Load model and explore the latent space:
 
 Classification accuracy for 1000 labeled images:
 
-~Graph for variation of accuracy~
 <img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/semi_aae_accuracy_with_NN.png" alt="Cover" style="width: 100px;"/>
 
-~Cat dist match~
-~Gauss dist match~
 <img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/cat_n_gauss_dist_real_obtained.png" alt="Cover" style="width: 100px;"/>
 
 
