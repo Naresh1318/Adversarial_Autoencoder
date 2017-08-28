@@ -1,5 +1,4 @@
 # Adversarial autoencoders
-### [Under development]
 <img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/nw_architecture.png" alt="Cover" style="width: 100px;"/>
 
 This repository contains code to implement adversarial autoencoder using Tensorflow.
@@ -12,7 +11,7 @@ Medium posts:
 
 3. [A Wizard's guide to Adversarial Autoencoders: Part 3. Disentanglement of style and content.](https://medium.com/towards-data-science/a-wizards-guide-to-adversarial-autoencoders-part-3-disentanglement-of-style-and-content-89262973a4d7)
 
-3. [A Wizard's guide to Adversarial Autoencoders: Part 4. Classify MNIST using 1000 labels.]()
+3. [A Wizard's guide to Adversarial Autoencoders: Part 4. Classify MNIST using 1000 labels.](https://medium.com/towards-data-science/a-wizards-guide-to-adversarial-autoencoders-part-4-classify-mnist-using-1000-labels-2ca08071f95)
 
 ## Installing the dependencies
 Install virtualenv and creating a new virtual environment:
@@ -53,7 +52,6 @@ To load the trained model and generate images passing inputs to the decoder run:
 ### Adversarial Autoencoder:
 #### Architecture:
 
-**~Image of the architecture~**
 <img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/AAE%20Block%20Diagram.png" alt="Cover" style="width: 100px;"/>
 
 Training:
@@ -67,18 +65,16 @@ Load model and explore the latent space:
 Example of adversarial autoencoder output when the encoder is constrained
 to have a stddev of 5.
 
-~ Images of the posterior and prior distributions matching ~
 <img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/AAE%20dist%20match.png" alt="Cover" style="width: 100px;"/>
-Matching prior and posterior distributions.
+<div style='text-align: center;'> Matching prior and posterior distributions. </div>
 
 
 ![Adversarial_autoencoder](https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/adversarial_autoencoder_2.png)
-Distribution of digits in the latent space.
+<div style='text-align: center;'> Distribution of digits in the latent space. </div>
 
 ### Supervised Adversarial Autoencoder:
 #### Architecture:
 
-*~Image of the architecture~*
 <img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/Supervised%20AAE.png" alt="Cover" style="width: 100px;"/>
 
 Training:
@@ -95,7 +91,6 @@ Example of disentanglement of style and content:
 ### Semi-Supervised Adversarial Autoencoder:
 #### Architecture:
 
-**~Image of the architecture~**
 
 Training:
 
