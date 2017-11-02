@@ -233,7 +233,7 @@ def train(train_model=True):
     dc_c_loss_real = tf.reduce_mean(
         tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.ones_like(d_c_real), logits=d_c_real))
     dc_c_loss_fake = tf.reduce_mean(
-        tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.ones_like(d_c_fake), logits=d_c_fake))
+        tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.zeros_like(d_c_fake), logits=d_c_fake))
     dc_c_loss = dc_c_loss_fake + dc_c_loss_real
 
     # Generator loss

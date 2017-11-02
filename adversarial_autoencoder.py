@@ -163,13 +163,13 @@ def train(train_model=True):
     autoencoder_loss = tf.reduce_mean(tf.square(x_target - decoder_output))
 
     # Discrimminator Loss
-    dc_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.ones_like(d_real), logits=d_real))
-    dc_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.zeros_like(d_fake), logits=d_fake))
+    dc_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.ones_like(d_real), logits=d_real))
+    dc_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.zeros_like(d_fake), logits=d_fake))
     dc_loss = dc_loss_fake + dc_loss_real
 
     # Generator loss
     generator_loss = tf.reduce_mean(
-        tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.ones_like(d_fake), logits=d_fake))
+        tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.ones_like(d_fake), logits=d_fake))
 
     all_variables = tf.trainable_variables()
     dc_var = [var for var in all_variables if 'dc_' in var.name]

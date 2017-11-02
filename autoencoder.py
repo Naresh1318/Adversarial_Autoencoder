@@ -186,4 +186,4 @@ def train(train_model):
             generate_image_grid(sess, op=decoder_image)
 
 if __name__ == '__main__':
-    train(train_model=False)
+    train(train_model=True)
