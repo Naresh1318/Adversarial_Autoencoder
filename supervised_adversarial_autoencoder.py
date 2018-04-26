@@ -154,7 +154,7 @@ def train(train_model=True):
     with tf.variable_scope(tf.get_variable_scope()):
         encoder_output = encoder(x_input)
         # Concat class label and the encoder output
-        decoder_input = tf.concat(1, [y_input, encoder_output])
+        decoder_input = tf.concat([y_input, encoder_output], 1)
         decoder_output = decoder(decoder_input)
 
     with tf.variable_scope(tf.get_variable_scope()):
@@ -168,13 +168,13 @@ def train(train_model=True):
     autoencoder_loss = tf.reduce_mean(tf.square(x_target - decoder_output))
 
     # Discriminator Loss
-    dc_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.ones_like(d_real), logits=d_real))
-    dc_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.zeros_like(d_fake), logits=d_fake))
+    dc_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.ones_like(d_real), logits=d_real))
+    dc_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.zeros_like(d_fake), logits=d_fake))
     dc_loss = dc_loss_fake + dc_loss_real
 
     # Generator loss
     generator_loss = tf.reduce_mean(
-        tf.nn.sigmoid_cross_entropy_with_logits(targets=tf.ones_like(d_fake), logits=d_fake))
+        tf.nn.sigmoid_cross_entropy_with_logits(labels=tf.ones_like(d_fake), logits=d_fake))
 
     all_variables = tf.trainable_variables()
     dc_var = [var for var in all_variables if 'dc_' in var.name]
@@ -247,6 +247,7 @@ def train(train_model=True):
             saver.restore(sess, save_path=tf.train.latest_checkpoint(results_path + '/' +
                                                                      all_results[-1] + '/Saved_models/'))
             generate_image_grid(sess, op=decoder_image)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Autoencoder Train Parameter")
