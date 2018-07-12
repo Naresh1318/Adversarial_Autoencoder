@@ -95,11 +95,11 @@ Example of disentanglement of style and content:
 
 Training:
 
-        python3 supervised_adversarial_autoencoder.py --train True
+        python3 semi_supervised_adversarial_autoencoder.py --train True
 
 Load model and explore the latent space:
 
-        python3 supervised_adversarial_autoencoder.py --train False
+        python3 semi_supervised_adversarial_autoencoder.py --train False
 
 Classification accuracy for 1000 labeled images:
 
