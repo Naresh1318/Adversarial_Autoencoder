@@ -1,5 +1,5 @@
 # Adversarial autoencoders
-<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/nw_architecture.png" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/nw_architecture.png" alt="Cover"/>
 
 This repository contains code to implement adversarial autoencoder using Tensorflow.
 
@@ -52,7 +52,7 @@ To load the trained model and generate images passing inputs to the decoder run:
 ### Adversarial Autoencoder:
 #### Architecture:
 
-<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/AAE%20Block%20Diagram.png" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/AAE%20Block%20Diagram.png" alt="Cover"/>
 
 Training:
 
@@ -65,7 +65,7 @@ Load model and explore the latent space:
 Example of adversarial autoencoder output when the encoder is constrained
 to have a stddev of 5.
 
-<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/AAE%20dist%20match.png" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/AAE%20dist%20match.png" alt="Cover"/>
 
 **_Matching prior and posterior distributions._**
 
@@ -76,7 +76,7 @@ to have a stddev of 5.
 ### Supervised Adversarial Autoencoder:
 #### Architecture:
 
-<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/Supervised%20AAE.png" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/Supervised%20AAE.png" alt="Cover"/>
 
 Training:
 
@@ -87,11 +87,11 @@ Load model and explore the latent space:
         python3 supervised_adversarial_autoencoder.py --train False
 
 Example of disentanglement of style and content:
-<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/disentanglement%20of%20style%20and%20content.png" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/disentanglement%20of%20style%20and%20content.png" alt="Cover"/>
 
 ### Semi-Supervised Adversarial Autoencoder:
 #### Architecture:
-<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/semi_AAE%20architecture.png" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/semi_AAE%20architecture.png" alt="Cover"/>
 
 Training:
 
@@ -103,9 +103,9 @@ Load model and explore the latent space:
 
 Classification accuracy for 1000 labeled images:
 
-<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/semi_aae_accuracy_with_NN.png" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/semi_aae_accuracy_with_NN.png" alt="Cover"/>
 
-<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/cat_n_gauss_dist_real_obtained.png" alt="Cover" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Naresh1318/Adversarial_Autoencoder/master/README/cat_n_gauss_dist_real_obtained.png" alt="Cover"/>
 
 
 ***Note:***
